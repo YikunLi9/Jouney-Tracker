@@ -44,13 +44,13 @@ class SettingsScreen extends StatelessWidget {
                     icon: Icon(Icons.file_download),
                     label: Text('Export Data'),
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(primary: Colors.blueGrey[200]), // Use light blue-gray
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey[200]), // Use light blue-gray
                   ),
                   ElevatedButton.icon(
                     icon: Icon(Icons.delete),
                     label: Text('Delete Data'),
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(primary: Colors.blueGrey[200]), // Same light blue-gray
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey[200]), // Same light blue-gray
                   ),
                 ],
               ),
