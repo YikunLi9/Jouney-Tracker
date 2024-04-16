@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'settings.dart'; // 导入设置页面
+import 'settings.dart';
+import 'home.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,10 +28,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    Center(
-      child: Text('Welcome to the Main Page!', style: TextStyle(fontSize: 24)),
-    ),
-    SettingsScreen(),
+    HomeScreen(), // 使用导入的HomeScreen作为首页
+    SettingsScreen(), // 设置页面
   ];
 
   void _onItemTapped(int index) {
