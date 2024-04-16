@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mapType: MapType.normal,
             myLocationEnabled: true,
             myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
           ),
           Positioned(
             bottom: 50,
