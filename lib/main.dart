@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'advanture_chart.dart';
 import 'settings.dart';
 import 'home.dart';
 
@@ -28,8 +29,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(), // 使用导入的HomeScreen作为首页
-    SettingsScreen(), // 设置页面
+    AdventureScreen(),
+    HomeScreen(),
+    SettingsScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -44,6 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_on_sharp),
+            label: 'My Adventure',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
