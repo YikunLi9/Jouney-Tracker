@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 import 'package:location/location.dart';
 import 'database_util.dart';
 
@@ -18,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   Timer? _timer;
   Map<PolylineId, Polyline> _polylines = {};
   List<LatLng> routePoints = [];
+
 
   final String _mapStyle = """
   [
@@ -399,9 +402,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
       _polylines[id] = polyline;
     }
     print("Polyline updated with points count: ${allPoints.length}");
-    setState(() {
-      // 更新地图的Polyline
-    });
+    setState(() {});
   }
 
   void _recordLocation() async {
