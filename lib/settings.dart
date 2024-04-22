@@ -13,6 +13,9 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  String username = "Username"; // Default username
+  String avatarUrl = "https://example.com/user_avatar.png"; // Default avatar URL
+
   void _exportData() async {
     var status = await Permission.storage.request();
     if (status.isGranted) {
@@ -96,12 +99,53 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  void _editProfile() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController nameController = TextEditingController(text: username);
+        TextEditingController avatarController = TextEditingController(text: avatarUrl);
+        return AlertDialog(
+          title: Text("Edit Profile"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: "Username"),
+              ),
+              TextField(
+                controller: avatarController,
+                decoration: InputDecoration(labelText: "Avatar URL"),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                setState(() {
+                  username = nameController.text;
+                  avatarUrl = avatarController.text;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
-        backgroundColor: Colors.grey[300], // Light gray
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -113,16 +157,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: <Widget>[
                     CircleAvatar(
                       radius: 30,
-                      backgroundImage: NetworkImage('https://example.com/user_avatar.png'),
+                      backgroundImage: NetworkImage(avatarUrl),
                     ),
                     SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Username', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87)),
-                          Text('Days of Use: 365', style: TextStyle(fontSize: 16, color: Colors.black54)),
-                          Text('Total Travel Distance: 1234 km', style: TextStyle(fontSize: 16, color: Colors.black54)),
+                          Text('Welcome, $username', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87)),
+                          ElevatedButton(
+                            onPressed: _editProfile,
+                            child: Text("Edit Profile"),
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey[200]),
+                          ),
                         ],
                       ),
                     ),
@@ -149,14 +196,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ],
               ),
               ListTile(
-                leading: Icon(Icons.map, color: Colors.blueGrey[400]),
-                title: Text('Map Theme', style: TextStyle(color: Colors.black87)),
-                onTap: () {},
-              ),
-              ListTile(
                 leading: Icon(Icons.info_outline, color: Colors.blueGrey[400]),
                 title: Text('About', style: TextStyle(color: Colors.black87)),
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("About the App"),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              Text('App Version: 1.0.3'), // 你可以修改这里显示具体的版本号
+                              Text('Developed by Yikun Li'), // 添加你的公司或者你的名字
+                              Text('For CASA0015 CE@UCL'), // 版权信息，可以按需修改年份
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('Close'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),
