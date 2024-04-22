@@ -58,12 +58,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-
-    defaultConfig {
-        def API_KEY = System.getenv("GOOGLE_MAP_API")
-        buildConfigField 'String', 'GOOGLE_MAP_API', "\"${GOOGLE_MAP_API}\""
-        manifestPlaceholders = [apiKeyValue: GOOGLE_MAP_API]
-    }
 }
 
 flutter {
