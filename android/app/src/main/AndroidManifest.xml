@@ -37,6 +37,10 @@
             android:value="2" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
+<<<<<<< HEAD
             android:value="${apiKeyValue}"/>
+=======
+            android:value=${{ secrets.GOOGLE_MAP_API }}/>
+>>>>>>> 653a4b4870a0af71dc5ffe6cf38a183b3fccdc83
     </application>
 </manifest>
