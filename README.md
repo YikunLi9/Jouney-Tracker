@@ -1,6 +1,7 @@
 # Journey Tracker
 
 ### This application is not completed yet. 
+### The real google map api key not added yet.
 
 ![1](diagrams/wireframes.png)
 
