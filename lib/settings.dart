@@ -207,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: <Widget>[
-                              Text('App Version: 1.0.3'), // 你可以修改这里显示具体的版本号
+                              Text('App Version: 1.1.0'), // 你可以修改这里显示具体的版本号
                               Text('Developed by Yikun Li'), // 添加你的公司或者你的名字
                               Text('For CASA0015 CE@UCL'), // 版权信息，可以按需修改年份
                             ],
