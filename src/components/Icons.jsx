@@ -16,11 +16,11 @@ const Icons = () => (
     </div>
      <div className="icon-con"  >
     	<img className="icon" src={icon2}></img>
-    	<div className="icon-title">flexible powerful</div>
+    	<div className="icon-title">Real-time Tracking</div>
     </div>
      <div className="icon-con"  >
     	<img className="icon" src={icon3}></img>
-    	<div className="icon-title">save resources</div>
+    	<div className="icon-title">Data Insights</div>
     </div>
   </div>
 );

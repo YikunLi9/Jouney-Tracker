@@ -23,12 +23,12 @@ const App = () => (
         <ParticlesBg type="polygon" bg={true}/>
         <div style={{ height: 500 }}>
           <div className="boxs header">
-            <h1 className="title">Simple gh-pages Template</h1>
+            <h1 className="title">Journey Tracker</h1>
             <h4 className="introduction">
-              Here is a brief introduction of your project, which can explain what your project wants, what functions it has, and what great and attractive places it has.
+              Journey Tracker aims to enhance user experience by providing location tracking and data management functionalities, primarily helping users record and monitor their daily travel routes for better planning and analysis of their journeys.
             </h4>
             <div className="buttons">
-              <a href="https://github.com/lindelof/particles-bg">
+              <a href="https://github.com/YikunLi9/Jouney-Tracker/tree/gh-pages">
                 <AwesomeButton
                   size="medium"
                   type="secondary"
@@ -37,7 +37,7 @@ const App = () => (
                 </AwesomeButton> 
               </a> 
               <div className="space"></div>
-              <a href="https://github.com/nordicgiant2/gh-pages-theme">
+              <a href="https://github.com/YikunLi9/Jouney-Tracker/tree/main">
                 <AwesomeButton
                   size="medium"
                   type="primary"
@@ -55,7 +55,7 @@ const App = () => (
           <div className="boxs">
             <h1 className="underline">Project Introduction</h1>
             <div className="box-con">
-              My view of functional languages is that they all use very powerful compilers, such as Haskell. For such a compiler, functional generics are very useful because they make a lot of transformations possible, including parallelization. But the Python interpreter doesn't know what your code means, which is also useful. So, I don't think it's reasonable to add the following functional ideas to python, because these are very useful in functional languages, but not suitable for Python
+              Sometimes on long journeys, it's easy to forget the places you've passed along the way, and during everyday city tours, you might not pay attention to the scenery around you. Therefore, Journey Tracker has been developed to record the routes we often forget and visualize them on a map, helping you recall every step of your travels.
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@ const App = () => (
             <h1 className="blue underline">Characteristic</h1>
             <Icons />
             <div className="box-con blue">
-              My view of functional languages is that they all use very powerful compilers, such as Haskell. For such a compiler, functional generics are very useful because they make a lot of transformations possible, including parallelization. But the Python interpreter doesn't know what your code means, which is also useful. So, I don't think it's reasonable to add the following functional ideas to python, because these are very useful in functional languages, but not suitable for Python
+              Journey Tracker enhances travel efficiency with its real-time location tracking and historical data visualization capabilities. It also boosts users' control over their personal information through robust data management and export features. Additionally, its excellent user experience design and main interface offer a smooth and intuitive user experience.
             </div>
           </div>
         </div>
@@ -95,22 +95,11 @@ const App = () => (
       >
         <div style={{ height: 500 }}>
           <div className="boxs">
-            <div className="bsize">lightweight, high performance</div>
+            <div className="bsize">High efficiency, User friendly</div>
           </div>
         </div>
       </Parallax>
 
-      <Parallax strength={-100}>
-        <div style={{ height: 600 }}>
-          <div className="boxs">
-            <div className="box-con blue">
-              <h1 className="underline">Sample Code</h1>
-              <div className="left code"><Code /></div>
-              <div>This is the code of some examples. You can copy and paste it into your program to run. If you want to learn more about its usage, please visit the document page</div>
-            </div>
-          </div>
-        </div>
-      </Parallax>
     </div>
     <div className="footer">Copyright Mr right. This code is open source.</div>
   </div>
