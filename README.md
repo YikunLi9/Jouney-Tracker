@@ -1,6 +1,8 @@
 # Journey Tracker
 
-Journey Tracker is an application that helps you recall travel routes.
+This is an application that helps you recall travel routes.
+
+#### Journey Tracker aims to enhance user experience by providing location tracking and data management functionalities, primarily helping users record and monitor their daily travel routes for better planning and analysis of their journeys.
 
 Landing page: https://yikunli9.github.io/Jouney-Tracker/
 
