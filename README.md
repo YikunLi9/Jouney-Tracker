@@ -60,7 +60,7 @@ Adenture Page - Map
 
 This is a simple and short demo video to show main functions:
 
-<video src="diagrams/presentation.mp4"></video>
+https://github.com/YikunLi9/Jouney-Tracker/assets/146270655/14cfbcd2-f9a9-4b36-922d-fd2fd5f6e250
 
 
 
