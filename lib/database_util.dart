@@ -9,12 +9,14 @@ class DatabaseHelper {
 
   DatabaseHelper._init();
 
+  // Asynchronous getter to retrieve the database instance. It initializes the database if not already initialized.
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB('locations.db');
     return _database!;
   }
 
+  // Initialize the database with the given file path and create tables if they do not exist.
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
@@ -22,11 +24,13 @@ class DatabaseHelper {
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
+  // Function to create the database schema. This is called when the database is created for the first time.
   Future _createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const doubleType = 'REAL NOT NULL';
     const textType = 'TEXT NOT NULL';
 
+    // Execute SQL command to create the locations table with specified column types.
     await db.execute('''
 CREATE TABLE locations (
   id $idType,
@@ -37,6 +41,7 @@ CREATE TABLE locations (
 ''');
   }
 
+  // Insert a new location entry into the database.
   Future<void> insertLocation(double latitude, double longitude) async {
     final db = await instance.database;
     final json = {
@@ -47,6 +52,7 @@ CREATE TABLE locations (
     await db.insert('locations', json);
   }
 
+  // Retrieve all locations recorded today from the database.
   Future<List<LatLng>> getTodayLocations() async {
     final db = await database;
     String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -55,7 +61,7 @@ CREATE TABLE locations (
         where: "timestamp LIKE ?",
         whereArgs: ["$today%"]
     );
-
+    // Convert the query results into a list of LatLng objects.
     List<LatLng> points = result.map((record) {
       return LatLng(record['latitude'], record['longitude']);
     }).toList();
@@ -63,6 +69,7 @@ CREATE TABLE locations (
     return points;
   }
 
+   // Retrieve locations by a specific date.
   Future<List<LatLng>> getLocationsByDate(DateTime date) async {
     final db = await database;
     String dateStr = DateFormat('yyyy-MM-dd').format(date);
@@ -76,15 +83,17 @@ CREATE TABLE locations (
     return points;
   }
 
+  // Retrieve all location entries from the database.
   Future<List<Map<String, dynamic>>> getAllLocations() async {
     final db = await database;
     final result = await db.query('locations');
     return result;
   }
 
+  // Delete all locations from the database.
   Future<int> deleteAllLocations() async {
     final db = await database;
-    final result = await db.delete('locations'); // Deletes all rows in locations table
+    final result = await db.delete('locations');
     return result;
   }
 

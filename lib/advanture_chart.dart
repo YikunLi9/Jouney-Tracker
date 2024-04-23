@@ -8,16 +8,19 @@ import 'database_util.dart';
 
 import 'dart:math';
 
+// Define a StatefulWidget for the adventure screen of the app.
 class AdventureScreen extends StatefulWidget {
   @override
   _AdventureScreenState createState() => _AdventureScreenState();
 }
 
+// State class to handle dynamic updates and data management for the AdventureScreen.
 class _AdventureScreenState extends State<AdventureScreen> {
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
+  DateTime _selectedDay = DateTime.now();  // Currently selected day in the calendar.
+  DateTime _focusedDay = DateTime.now(); // The day that the calendar is focused on.
   List<FlSpot> _spots = [];
 
+  // Function to calculate the distance between two geographical points.
   double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
     var p = 0.017453292519943295;    // Math.PI / 180
     var c = cos;
@@ -27,7 +30,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
     return double.parse((12742 * asin(sqrt(a))).toStringAsFixed(2)); // 2 * R; R = 6371 km, round to 2 decimal places
   }
 
-
+  // Function to fetch and process location data for a selected date.
   void _updateDataForSelectedDate() async {
     List<LatLng> locations = await DatabaseHelper.instance.getLocationsByDate(_selectedDay);
     double totalDistance = 0;
@@ -39,7 +42,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
             locations[i].latitude, locations[i].longitude
         );
       }
-      newSpots.add(FlSpot(i.toDouble(), double.parse(totalDistance.toStringAsFixed(2)))); // 确保距离为两位小数
+      newSpots.add(FlSpot(i.toDouble(), double.parse(totalDistance.toStringAsFixed(2)))); // Create a spot for the chart.
     }
 
     setState(() {
@@ -50,7 +53,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
   @override
   void initState() {
     super.initState();
-    _updateDataForSelectedDate();  // 在初始化时加载当天的数据
+    _updateDataForSelectedDate();   // Load data for the current date initially.
   }
 
   @override
@@ -64,22 +67,22 @@ class _AdventureScreenState extends State<AdventureScreen> {
           TableCalendar(
             firstDay: DateTime.utc(2010, 10, 16),
             lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: _focusedDay,  // 使用 _focusedDay 替换 DateTime.now()
+            focusedDay: _focusedDay,  // The day the calendar is focused upon.
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                _selectedDay = selectedDay;  // 更新选中的日期
-                _focusedDay = focusedDay;  // 同时更新焦点日期
-                _updateDataForSelectedDate();
+                _selectedDay = selectedDay;   // Update the selected day.
+                _focusedDay = focusedDay;  // Update the focused day.
+                _updateDataForSelectedDate(); // Refresh the data for the new selected day.
               });
             },
           ),
           SizedBox(height: 20),
           Expanded(
             child: _spots.isEmpty
-                ? Center(child: Text("无数据"))
+                ? Center(child: Text("No data")) // Display message when no data is available.
                 : Padding(
-              padding: const EdgeInsets.all(8.0),  // 增加整体内边距
+              padding: const EdgeInsets.all(8.0),  // Padding around the chart.
               child: LineChart(
                 LineChartData(
                   lineBarsData: [
@@ -97,29 +100,29 @@ class _AdventureScreenState extends State<AdventureScreen> {
                   ),
                   titlesData: FlTitlesData(
                     topTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // 删除上方标题
+                      sideTitles: SideTitles(showTitles: false),
                     ),
                     rightTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // 删除右方标题
+                      sideTitles: SideTitles(showTitles: false),
                     ),
                     bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(showTitles: false), // 删除底部 X 轴标题
+                      sideTitles: SideTitles(showTitles: false),
                     ),
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
                         interval: 1,
                         getTitlesWidget: (value, meta) {
-                          return Text('${value.toStringAsFixed(2)} km', style: TextStyle(fontSize: 10));  // 保留两位小数
+                          return Text('${value.toStringAsFixed(2)} km', style: TextStyle(fontSize: 10));  // Display distances with two decimal points.
                         },
                         reservedSize: 40,
                       ),
                     ),
                   ),
                   gridData: FlGridData(
-                    show: true,
-                    drawVerticalLine: false,  // 不绘制垂直线
-                    drawHorizontalLine: true,  // 绘制水平线
+                    show: true,  // Show grid lines.
+                    drawVerticalLine: false,  // Disable vertical lines.
+                    drawHorizontalLine: true, // Enable horizontal lines.
                     getDrawingHorizontalLine: (value) {
                       return FlLine(
                         color: Colors.grey[300],
@@ -127,8 +130,9 @@ class _AdventureScreenState extends State<AdventureScreen> {
                       );
                     },
                   ),
-                  minX: 0,
-                  maxX: _spots.length.toDouble() - 1,
+                  minX: 0, // Minimum value on the X-axis.
+                  maxX: _spots.length.toDouble() - 1,  // Maximum value on the X-axis.
+                  minY: 0,  // Minimum value on the Y-axis.
                   minY: 0,
                   maxY: _spots.isNotEmpty ? (_spots.map((spot) => spot.y).reduce(max) * 1.1).toDouble() : 1.0,
                 ),
@@ -140,7 +144,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => DetailPage(selectedDate: _selectedDay),
+                  builder: (_) => DetailPage(selectedDate: _selectedDay), // Pass the selected date to the detail page.
                 ),
               );
             },

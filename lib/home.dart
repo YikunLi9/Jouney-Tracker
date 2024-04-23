@@ -6,22 +6,24 @@ import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platf
 import 'package:location/location.dart';
 import 'database_util.dart';
 
+// Define the HomeScreen class which is a stateful widget, necessary for widgets that need mutable state.
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin { // 添加 AutomaticKeepAliveClientMixin 来保持页面状态
-  static GoogleMapController? _mapController; // 使用静态变量保存地图控制器
-  final Location _location = Location();
-  double _currentZoom = 15;
-  LatLng? _currentPosition;
-  static LatLng? _lastKnownPosition; // 使用静态变量保存最后已知位置
-  Timer? _timer;
-  Map<PolylineId, Polyline> _polylines = {};
-  List<LatLng> routePoints = [];
+// Define the private State class for HomeScreen using AutomaticKeepAliveClientMixin to keep the state alive (prevents state from being disposed).
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin { 
+  static GoogleMapController? _mapController; // Controller for Google Map interactions.
+  final Location _location = Location(); // Location instance to get and track device's location.
+  double _currentZoom = 15; // Initial zoom level for the map.
+  LatLng? _currentPosition; // To store the current location of the device.
+  static LatLng? _lastKnownPosition;  // To store the last known position even after app restarts.
+  Timer? _timer; // Timer to perform location updates periodically.
+  Map<PolylineId, Polyline> _polylines = {}; // Map to hold polylines that represent paths on the map.
+  List<LatLng> routePoints = []; // List to hold points on the route travelled.
 
-
+  // JSON string defining the custom style for the Google Map.
   final String _mapStyle = """
   [
   {
@@ -292,24 +294,27 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 ]
 """;
 
+  // Overridden property from AutomaticKeepAliveClientMixin to keep the widget alive.
   @override
   bool get wantKeepAlive => true; // 为 AutomaticKeepAliveClientMixin 实现
 
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
-    _timer = Timer.periodic(Duration(seconds: 10), (Timer t) => _recordLocation());
-    _loadTodayLocations();
+    _requestLocationPermission(); // Request location permission at initialization.
+    _timer = Timer.periodic(Duration(seconds: 10), (Timer t) => _recordLocation()); // Setup a timer to record location every 10 seconds.
+    _loadTodayLocations();  // Load locations recorded today when the widget initializes.
   }
 
+   // Function to load today's location points from the database and update the polyline on the map.
   void _loadTodayLocations() async {
     List<LatLng> todayPoints = await DatabaseHelper.instance.getTodayLocations();
     setState(() {
-      _updatePolylineWithPoints(todayPoints);
+      _updatePolylineWithPoints(todayPoints); // Update the polyline on the map with today's points.
     });
   }
 
+   // Function to update the polyline with new points.
   void _updatePolylineWithPoints(List<LatLng> points) {
     PolylineId id = PolylineId("route");
     if (_polylines.containsKey(id)) {
@@ -326,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     print("Polyline updated with points count: ${points.length}");
   }
 
-
+  // Clean up the controller and timer when the widget is disposed.
   @override
   void dispose() {
     _timer?.cancel();
@@ -334,6 +339,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     super.dispose();
   }
 
+  // Callback function when the map is created.
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
     controller.setMapStyle(_mapStyle);
@@ -346,7 +352,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     }
   }
 
-
+  // Function to get the current location of the device and update the map position.
   Future<void> _locateMe() async {
     var locData = await _location.getLocation();
     _currentPosition = LatLng(locData.latitude!, locData.longitude!);
@@ -356,6 +362,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     }
   }
 
+  // Function to request location permissions.
   void _requestLocationPermission() async {
     var permission = await _location.hasPermission();
     if (permission == PermissionStatus.denied) {
@@ -367,6 +374,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     _locateMe();
   }
 
+  // Function to increase the zoom level of the map.
   void _zoomIn() {
     if (_currentZoom < 19) {
       setState(() {
@@ -376,6 +384,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     }
   }
 
+  // Function to decrease the zoom level of the map.
   void _zoomOut() {
     if (_currentZoom > 0) {
       setState(() {
@@ -385,9 +394,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     }
   }
 
+  // Function to add and update a polyline with new points collected.
   void _addOrUpdatePolyline(List<LatLng> newPoints) {
     PolylineId id = PolylineId("route");
-    // 合并旧的点和新的点
     List<LatLng> allPoints = List.from(_polylines[id]?.points ?? [])..addAll(newPoints);
 
     if (_polylines.containsKey(id)) {
@@ -405,6 +414,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
     setState(() {});
   }
 
+  // Record the current location and update the database and polyline.
   void _recordLocation() async {
     var locData = await _location.getLocation();
     LatLng newPoint = LatLng(locData.latitude!, locData.longitude!);
@@ -415,14 +425,14 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);  // 调用 super.build 保持页面状态
+    super.build(context);
     return Scaffold(
       body: Stack(
         children: [
           GoogleMap(
             onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
-              target: _lastKnownPosition ?? LatLng(0, 0), // 使用上次位置或默认位置
+              target: _lastKnownPosition ?? LatLng(0, 0),
               zoom: _lastKnownPosition != null ? _currentZoom : 1,
             ),
             mapType: MapType.normal,

@@ -28,22 +28,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1;
+
+  // List of widget options corresponding to each bottom navigation item.
   static List<Widget> _widgetOptions = <Widget>[
     AdventureScreen(),
     HomeScreen(),
     SettingsScreen(),
   ];
 
+  // Method to handle tapping on a bottom navigation item.
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index; // Update the currently selected tab index.
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: _widgetOptions.elementAt(_selectedIndex), // Display the selected widget based on _selectedIndex.
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -60,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: _onItemTapped, // Method called when a tab is tapped.
       ),
     );
   }

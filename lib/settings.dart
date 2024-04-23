@@ -7,30 +7,34 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'database_util.dart';
 
+// Define a StatefulWidget for the settings screen of the application.
 class SettingsScreen extends StatefulWidget {
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
+// State class for the SettingsScreen which handles user interactions and data processing.
 class _SettingsScreenState extends State<SettingsScreen> {
   String username = "Username"; // Default username
   String avatarUrl = "https://example.com/user_avatar.png"; // Default avatar URL
 
+  // Function to handle the exporting of data to a CSV file, includes requesting storage permissions.
   void _exportData() async {
     var status = await Permission.storage.request();
     if (status.isGranted) {
-      final List<Map<String, dynamic>> data = await DatabaseHelper.instance.getAllLocations();
+      final List<Map<String, dynamic>> data = await DatabaseHelper.instance.getAllLocations(); // Retrieve all location data from the database.
       List<List<dynamic>> csvData = [
         ['ID', 'Latitude', 'Longitude', 'Timestamp'], // CSV headers
       ];
       for (var row in data) {
         csvData.add([row['id'], row['latitude'], row['longitude'], row['timestamp']]);
       }
-      String csv = const ListToCsvConverter().convert(csvData);
-      final directory = await getExternalStorageDirectory();
+      String csv = const ListToCsvConverter().convert(csvData); // Convert data to CSV format.
+      final directory = await getExternalStorageDirectory(); // Retrieve the directory to store the file.
       final path = directory!.path + "/exported_data.csv";
       final file = File(path);
       await file.writeAsString(csv);
+      // Display a dialog indicating success.
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -44,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       );
-    } else {
+    } else {   // Display a dialog if permissions are denied.
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -61,6 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
+  // Function to delete all data from the database after user confirmation.
   void _deleteData() {
     showDialog(
       context: context,
@@ -76,8 +81,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             TextButton(
               child: Text("Delete"),
               onPressed: () async {
-                await DatabaseHelper.instance.deleteAllLocations();
-                Navigator.of(context).pop();
+                await DatabaseHelper.instance.deleteAllLocations(); // Delete all locations from the database.
+                Navigator.of(context).pop(); // Dismiss the confirmation dialog.
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -99,6 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // Function to edit the user profile, allows changing username and avatar URL.
   void _editProfile() {
     showDialog(
       context: context,

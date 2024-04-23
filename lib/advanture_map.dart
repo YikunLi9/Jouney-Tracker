@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'database_util.dart';
 
+// StatefulWidget to handle the dynamic aspects of displaying a map with markers.
 class DetailPage extends StatefulWidget {
   final DateTime selectedDate;
 
@@ -14,16 +15,19 @@ class DetailPage extends StatefulWidget {
   _DetailPageState createState() => _DetailPageState();
 }
 
+// State class for DetailPage, managing map and location data.
 class _DetailPageState extends State<DetailPage> {
   late GoogleMapController mapController;
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
 
+  // Callback when map is created, setting the map controller and initiating data loading.
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     _loadData();
   }
 
+  // Fetch location data for the selected date and update the map accordingly.
   void _loadData() async {
     List<LatLng> locations = await DatabaseHelper.instance.getLocationsByDate(widget.selectedDate);
     if (locations.isNotEmpty) {
@@ -31,31 +35,34 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
+  // Update the map with markers and optionally polylines for the retrieved locations.
   void _updateMap(List<LatLng> locations) async {
     Set<Marker> markers = {};
-    List<LatLng> polylineCoordinates = [];
-    final icon = await createCircleBitmapDescriptor();  // 生成圆点图标
+    List<LatLng> polylineCoordinates = [];  // List to hold coordinates for polylines.
+    final icon = await createCircleBitmapDescriptor();  // Create a custom marker icon.
 
+    // Loop through locations, creating markers and adding coordinates to polyline list.
     for (var location in locations) {
       markers.add(Marker(
-        markerId: MarkerId(location.toString()),
-        position: location,
-        icon: icon,  // 使用生成的圆点图标
+        markerId: MarkerId(location.toString()), // Unique ID for each marker.
+        position: location, // Geographic coordinates for the marker.
+        icon: icon,
       ));
       polylineCoordinates.add(location);
     }
 
     setState(() {
-      _markers = markers;
+      _markers = markers; // Update state with new markers.
     });
 
     if (locations.isNotEmpty) {
       mapController.animateCamera(
-        CameraUpdate.newLatLngZoom(locations.first, 15),
+        CameraUpdate.newLatLngZoom(locations.first, 15), // Center on the first location with zoom level 15.
       );
     }
   }
 
+  // Function to create a custom marker icon as a circle.
   Future<BitmapDescriptor> createCircleBitmapDescriptor() async {
     final PictureRecorder pictureRecorder = PictureRecorder();
     final Canvas canvas = Canvas(pictureRecorder);
