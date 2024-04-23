@@ -15,17 +15,20 @@ This application is for those who like James Walker:
 
 ![1](diagrams/wireframes.png)
 
+
+
 ## Screenshots
 
 
 
 <center>   
-<img style="border-radius: 0.3125em;  zoom: 33%;  box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="diagrams/home_page.jpg">   
+<img style="border-radius: 0.3125em; box-shadow: 0 2px 4px 0 rgba(34,36,38,.12),0 2px 10px 0 rgba(34,36,38,.08);"     src="diagrams/home_page.jpg">   
 <br>    
 <div style="color:orange; border-bottom: 1px solid #d9d9d9;    display: inline-block;    color: #999;    padding: 2px;">
 Home Page
 </div> 
 </center>
+
 
 
 <center>   
@@ -51,11 +54,15 @@ Adenture Page - Chart
 Adenture Page - Map
 </div> 
 </center>
+
+
 ## Demo Video
 
 This is a simple and short demo video to show main functions:
 
 <video src="diagrams/presentation.mp4"></video>
+
+
 
 ## About the Application
 
@@ -73,6 +80,8 @@ This is a simple and short demo video to show main functions:
   google_maps_flutter: ^2.5.3
   csv: ^6.0.0
 ```
+
+
 
 ## Get Started
 
@@ -94,10 +103,14 @@ This is a simple and short demo video to show main functions:
 Or you can also just  download the apk in releases:
 [Releases · YikunLi9/Jouney-Tracker (github.com)](https://github.com/YikunLi9/Jouney-Tracker/releases)
 
+
+
 ##  Contact  Author
 
 If you want to contribute to this project, please contact:
 Yikun Li (yikun.li.22@ucl.ac.uk)
+
+
 
 ## License
 
